@@ -25,12 +25,13 @@ jobs:
             echo "Warning: src/main.lambda.ts not found, skipping rename."
           fi
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: 'us-east-1'
+- name: Configure AWS credentials
+  uses: aws-actions/configure-aws-credentials@v1
+  with:
+    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    aws-region: 'us-east-2'
+
 
       - name: Install dependencies
         run: npm ci
@@ -59,7 +60,9 @@ jobs:
           for i in $(seq 1 $RETRY_COUNT); do
             aws lambda update-function-code \
               --function-name arn:aws:lambda:us-east-2:537757446889:function:tallerawsBenjaminHeredia \
-              --zip-file fileb://deploy.zip && break
+              --zip-file fileb://deploy.zip \
+               --region us-east-2
+               && break
             if [ "$i" -eq "$RETRY_COUNT" ]; then
               echo "Max retries reached. Exiting."
               exit 1
@@ -76,7 +79,8 @@ jobs:
           for i in $(seq 1 $RETRY_COUNT); do
             aws lambda update-function-configuration \
               --function-name arn:aws:lambda:us-east-2:537757446889:function:tallerawsBenjaminHeredia \
-              --handler dist/main.handler && break
+              --handler dist/main.handler \
+               --region us-east-2 && break
             if [ "$i" -eq "$RETRY_COUNT" ]; then
               echo "Max retries reached. Exiting."
               exit 1

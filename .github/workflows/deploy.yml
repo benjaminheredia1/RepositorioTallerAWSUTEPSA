@@ -55,10 +55,10 @@ jobs:
         run: |
           RETRY_COUNT=5
           RETRY_INTERVAL=10
-          
+
           for i in $(seq 1 $RETRY_COUNT); do
             aws lambda update-function-code \
-              --function-name arn:aws:lambda:us-east-1:537757446889:function:techlab-lambda \
+              --function-name arn:aws:lambda:us-east-2:537757446889:function:tallerawsBenjaminHeredia \
               --zip-file fileb://deploy.zip && break
             if [ "$i" -eq "$RETRY_COUNT" ]; then
               echo "Max retries reached. Exiting."
@@ -72,10 +72,10 @@ jobs:
         run: |
           RETRY_COUNT=5
           RETRY_INTERVAL=10
-          
+
           for i in $(seq 1 $RETRY_COUNT); do
             aws lambda update-function-configuration \
-              --function-name arn:aws:lambda:us-east-1:537757446889:function:techlab-lambda \
+              --function-name arn:aws:lambda:us-east-2:537757446889:function:tallerawsBenjaminHeredia \
               --handler dist/main.handler && break
             if [ "$i" -eq "$RETRY_COUNT" ]; then
               echo "Max retries reached. Exiting."
